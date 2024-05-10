@@ -3,12 +3,27 @@ const User=require('../models/User');
 const Profile=require('../models/Profile');
 const OTP=require('../models/OTP');
 const jwt=require('jsonwebtoken');
-const bcrypt=require('bcrypt');
+// const bcrypt=require('bcrypt');
+const crypto=require('crypto');
 const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 
 require('dotenv').config();
+
+
+
+
+function generatePassword(password) {
+    const salt = "shomya"
+    const genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
+    return genHash
+}
+function validPassword(password, hash) {
+    const salt = "shomya"
+    const checkHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
+    return hash === checkHash
+}
 
 exports.signup=async(req,res)=>{
     try{
@@ -51,7 +66,7 @@ exports.signup=async(req,res)=>{
                     
                 })
             }
-            const hashed=await bcrypt.hash(password,10);
+            const hashed= generatePassword(password);
 
             const profileDetails=await Profile.create({
                 gender:null,
@@ -110,7 +125,8 @@ exports.login=async(req,res)=>{
                 })
             }
 
-            const matched=await bcrypt.compare(password,existingUser.password);
+            // const matched=await bcrypt.compare(password,existingUser.password);
+            const matched=validPassword(password,existingUser.password);
 
             if(!matched)
             {
@@ -215,7 +231,8 @@ exports.changePassword=async(req,res)=>{
         const userDetails=await User.findById(req.user.id);
         const{oldPassword,newPassword}=req.body;
     
-        const matched=await bcrypt.compare(oldPassword,userDetails.password);
+        // const matched=await bcrypt.compare(oldPassword,userDetails.password);
+        const matched=validPassword(password,userDetails.password);
     
         if(!matched)
         {
@@ -226,7 +243,8 @@ exports.changePassword=async(req,res)=>{
             })
         }
         
-        const hashedPass=await bcrypt.hash(newPassword,10);
+        // const hashedPass=await bcrypt.hash(newPassword,10);
+        const hashedPass= generatePassword(password);
     
         const updatedUser=await User.findByIdAndUpdate(req.user.id,{password:hashedPass},{new:true});
 

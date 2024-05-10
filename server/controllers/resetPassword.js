@@ -2,10 +2,15 @@
 
 const User=require('../models/User');
 const mailSender=require('../utils/mailSender');
-const bcrypt=require('bcrypt');
+// const bcrypt=require('bcrypt');
 const crypto=require('crypto');
 // reset password token
 
+function generatePassword(password) {
+    const salt = "shomya"
+    const genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
+    return genHash
+}
 
 exports.resetPasswordToken=async(req,res)=>{
 
@@ -80,7 +85,9 @@ exports.resetPassword=async(req,res)=>{
             })
         }
 
-        const hashedPassword= await bcrypt.hash(newPassword,10);
+        // const hashedPassword= await bcrypt.hash(newPassword,10);
+        const hashedPassword= generatePassword(password);
+
         await User.findByIdAndUpdate(userDetails._id,{password:hashedPassword},{new:true});
 
         res.status(200).json({
