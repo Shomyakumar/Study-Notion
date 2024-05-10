@@ -35,7 +35,7 @@ app.use('/api/v1/profile',profileRoutes);
 app.use('/api/v1/auth',userRoutes);
 
 
-const PORT=process.env.PORT;
+const PORT=process.env.PORT||4000;
 app.listen(PORT,()=>{
     console.log(`Server is runing on port ${PORT}`);
 })
