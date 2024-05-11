@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 import { buyCourse } from "../../../../services/operations/studentFeaturesAPI"
 
+
 export default function RenderTotalAmount() {
   const { total, cart } = useSelector((state) => state.cart)
   const { token } = useSelector((state) => state.auth)
@@ -21,7 +22,7 @@ export default function RenderTotalAmount() {
       <p className="mb-6 text-3xl font-medium text-yellow-100">₹ {total}</p>
       <button
         text="Buy Now"
-        onclick={handleBuyCourse}
+        onClick={handleBuyCourse}
         className="bg-yellow-50 font-bold text-lg px-4 py-2"
       >Buy Now
       </button>

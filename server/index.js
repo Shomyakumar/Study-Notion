@@ -7,7 +7,7 @@ const fileUpload=require('express-fileupload');
 const cors = require("cors");
 app.use(
 	cors({
-		origin:"http://localhost:3000",
+		// origin:"http://localhost:3000",
 		origin:"https://study-notion-eight-khaki.vercel.app",
 		credentials:true,
 	})

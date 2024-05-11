@@ -56,7 +56,7 @@ export default function Navbar(){
     }
     if(loading){
         return (
-            <div className='text-lg text-center p-2' >Loading...</div>
+            <div className='text-lg text-center p-2 text-richblack-900' >Loading...</div>
         )
     }
     return (
