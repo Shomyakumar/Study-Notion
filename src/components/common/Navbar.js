@@ -29,9 +29,10 @@ export default function Navbar(){
     //         link:"/catalog/web-development"
     //     }
     // ]
-
+    const[loading,setLoading]=useState(false);
     const[subLinks,setSubLinks]=useState([]);
     const fetchSublinks=async()=>{
+        setLoading(true);
         try{
             const result=await apiConnector("GET",categories.CATEGORIES_API);
             console.log("printing sublinks result",result.data);
@@ -43,6 +44,7 @@ export default function Navbar(){
         {
             console.log("Could not fetch the category list");
         }
+        setLoading(false);
     }
     
     useEffect(()=>{
@@ -51,6 +53,11 @@ export default function Navbar(){
 
     const matchRoute=(route)=>{
         return matchPath({path:route},location.pathname);
+    }
+    if(loading){
+        return (
+            <div className='text-lg text-center p-2' >Loading...</div>
+        )
     }
     return (
         <div className={`flex items-center justify-center h-14  border-b-[1px] border-richblack-700 z-50
