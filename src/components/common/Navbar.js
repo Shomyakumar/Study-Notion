@@ -54,11 +54,7 @@ export default function Navbar(){
     const matchRoute=(route)=>{
         return matchPath({path:route},location.pathname);
     }
-    if(loading){
-        return (
-            <div className='text-lg text-center p-2 text-richblack-900' >Loading...</div>
-        )
-    }
+   
     return (
         <div className={`flex items-center justify-center h-14  border-b-[1px] border-richblack-700 z-50
              ${ location.pathname !== "/" ? "bg-richblack-800" : ""}
